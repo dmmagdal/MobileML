@@ -33,7 +33,8 @@ def build_bert():
 	model.summary()
 
 	# Save the model.
-	# model.save(self.save_path)
+	# save_path = ("./bert_model.h5")
+	# model.save(save_path, save_format="h5")
 
 	# Return the model.
 	return model
