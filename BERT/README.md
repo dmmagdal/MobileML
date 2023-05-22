@@ -11,7 +11,7 @@ Description: Download a BERT model from Tensorflow Hub in Python to create BERT 
      - Used TFJS wizard converter script (TF Hub link). Was not able to convert model.
  - The main issue with converting the BERT model seems to possibly be issues with the input or output signatures not being defined for the model (regardless of conversion method).
  - Huggingface has limited support for Tensorflow models (including BERT) on their website. They seem to specialize in exporting models to ONNX format or TorchScript.
-     - Given that this repo isn't exclusively for Tensorflow/TensorflowJS only, it could be worth an attempt to create a Huggingface feature-extracton pipeline to produce the same embedding outputs expected by the python BERT model from TensorflowHub and export the pipeline to ONNX. After all, the BERT model should be the same in terms of weights and architecture. 
+     - Given that this repo isn't exclusively for Tensorflow/TensorflowJS only (though I'd personally prefer it), it could be worth an attempt to create a Huggingface feature-extracton pipeline to produce the same embedding outputs expected by the python BERT model from TensorflowHub and export the pipeline to ONNX. After all, the BERT model should be the same in terms of weights and architecture. 
 
 
 ### References
