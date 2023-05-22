@@ -22,6 +22,7 @@ Description: A collection of public works and examples that bring machine learni
      - [Latest TensorflowJS Core Documentations](https://js.tensorflow.org/api/latest/)
      - [Guide page](https://www.tensorflow.org/js/guide)
      - [TensorflowJS layers API for Keras users](https://www.tensorflow.org/js/guide/layers_for_keras_users) (Good for Keras users to get familiar with TFJS syntax)
+     - [TensorflowJS models and layers](https://www.tensorflow.org/js/guide/models_and_layers)
  - Ndarray
      - [NPM page](https://www.npmjs.com/package/ndarray)
  - Huggingface
