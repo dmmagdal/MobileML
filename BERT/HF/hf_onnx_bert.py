@@ -5,7 +5,7 @@
 # Windows/MacOS/Linux
 
 
-import onnx
+# import onnx
 import torch
 from torch import onnx
 from transformers import Pipeline, BertModel, BertTokenizer, pipeline
@@ -76,30 +76,49 @@ def main():
 	
 	# output = bert_pipeline(inputs, return_tensors=True)
 	# output = bert_embeddings_pipeline(inputs , return_tensors=True)
-	model_inputs = tokenizer.encode(inputs, return_tensors='pt')
+	model_inputs = tokenizer.encode(inputs, return_tensors='pt') # tensor [b, len]
 	output = bert_model(model_inputs)
 	print(output)
 	print(len(output))
 	print(output[0].shape) # Outputs sentence embedding
+	print(output[1].shape) # Outputs pooled embedding
+
+	print(model_inputs)
+
+	# dummy_input = torch.randint((1, 512))
+	dummy_input = torch.randn((1, 512))
 
 
 	onnx_path = "./bert_model.onnx"
 	torch.onnx.export(
-		model=bert_model,
-		args=tuple(model_inputs.values()),
-		f=onnx_path,
-		input_names=list(model_inputs.keys()),
-		output_names=["pooled_output"],
+		# model=bert_model,
+		# args=tuple(model_inputs.values()),
+		# f=onnx_path,
+		# input_names=list(model_inputs.keys()),
+		# output_names=["pooled_output"],
+		# opset_version=11,
+		# dynamic_axes={"input_ids": {0: "batch_size", 1: "sequence_length"}},
+		# verbose=True
+		dummy_input,
+		None,
+		onnx_path,
+		export_params=True,
 		opset_version=11,
-		dynamic_axes={"input_ids": {0: "batch_size", 1: "sequence_length"}},
-		verbose=True
+		do_constant_folding=True,
+		input_names=['model_inputs'],
+		output_names=['sequence_output', 'pooled_output'],
+		dynamic_axes={
+			'model_inputs': {0, 'batch_size'},
+			'sequence_output': {0, 'batch_size'},
+			'pooled_output': {0, 'batch_size'},
+		}
 	)
 
-	# Load the exported ONNX model
-	onnx_model = onnx.load(onnx_path)
+	# # Load the exported ONNX model
+	# onnx_model = onnx.load(onnx_path)
 
-	# Verify the ONNX model
-	onnx.checker.check_model(onnx_model)
+	# # Verify the ONNX model
+	# onnx.checker.check_model(onnx_model)
 
 	# Exit the program.
 	exit(0)
