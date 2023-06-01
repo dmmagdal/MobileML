@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "@tensorflow/tfjs": "^4.6.0",
+    "typescript": "^5.0.4"
+  },
+  "name": "bert-tfjs-test",
+  "description": "Load the exported TensorflowJS BERT model and pass it some text to embed.",
+  "version": "0.0.1",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "",
+  "license": "ISC"
+}
