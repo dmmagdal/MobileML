@@ -1,3 +1,4 @@
-datasets>=2.7.1
-onnx==1.11.0
-onnxruntime>=1.13.1
+datasets
+onnx
+onnxruntime
+tokenizers
