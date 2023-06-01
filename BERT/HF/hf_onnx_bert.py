@@ -6,10 +6,12 @@
 
 
 # import onnx
+from pathlib import Path
 import torch
 from torch import onnx
 from transformers import Pipeline, BertModel, BertTokenizer, pipeline
 from transformers.pipelines import PIPELINE_REGISTRY
+import transformers.convert_graph_to_onnx as onnx_convert
 
 
 class BERTPipeline(Pipeline):
@@ -33,22 +35,75 @@ class BERTPipeline(Pipeline):
 		# outputs = self.model(**model_inputs)
 		# Maybe {"logits": Tensor(...)}
 		outputs = self.model(model_inputs)
+		# print(self.model)
+		# exit()
 		return outputs
 
 	def postprocess(self, model_outputs):
 		# best_class = model_outputs["logits"].softmax(-1)
 		# return best_class
+		print(model_outputs)
+		print(len(model_outputs))
+		print(model_outputs[0])
+		print(model_outputs[0].shape)
+		print(model_outputs[1])
+		print(model_outputs[1].shape)
+		# exit()
 		return model_outputs[1]
+		# return model_outputs
 
 
 def main():
+	# Text inputs to be embedded by BERT.
+	inputs = "There have always been ghosts in the machine. Random "+\
+		"segments of code that when grouped together form unexpected "+\
+		"protocols."
 
-	# Initialize and register pipeline.
+	# Initialize BERT tokenizer and model from pretrained model on
+	# Huggingface Hub.
 	tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 	# bert_model = BertModel(config)
 	bert_model = BertModel.from_pretrained('bert-base-uncased')
 
-	'''
+	# Put model in "eval" mode.
+	bert_model.eval()
+	print("-" * 72)
+
+	# -----------------------------------------------------------------
+	# 'Vanilla' BERT model (no pipeline)
+	# -----------------------------------------------------------------
+
+	model_inputs = tokenizer.encode(inputs, return_tensors='pt') # tensor [b, len]
+	output = bert_model(model_inputs)
+	print(output)
+	print(len(output))
+	print(output[0].shape) # Outputs sentence embedding
+	print(output[1].shape) # Outputs pooled embedding
+	print("-" * 72)
+
+	# -----------------------------------------------------------------
+	# 'Vanilla' BERT feature extraction pipeline
+	# -----------------------------------------------------------------
+
+	# Valid feature extraction code. Note that it only outputs sentence
+	# embeddings though.
+	bert_pipeline = pipeline(
+		'feature-extraction', model='bert-base-uncased'
+	)
+
+	print("Output from vanilla BERT pipeline:")
+	output = bert_pipeline(inputs, return_tensors=True)
+	print(output)
+	print(len(output))
+	print(output[0].shape) # Outputs sentence embedding
+	print("-" * 72)
+
+	# -----------------------------------------------------------------
+	# Custom BERT feature extraction pipeline
+	# -----------------------------------------------------------------
+
+	# Initialize and register custom pipeline for bert feature
+	# extraction.
 	PIPELINE_REGISTRY.register_pipeline(
 		"bert-feature-extraction",
 		pipeline_class=BERTPipeline,
@@ -59,35 +114,33 @@ def main():
 
 	bert_embeddings_pipeline = pipeline(
 		'bert-feature-extraction', tokenizer=tokenizer,
-		model="bert-base-uncased"
+		# model="bert-base-uncased"
+		model=bert_model
 	)
-	'''
 
-	bert_model.eval()
-
-	# Valid feature extraction code.
-	# bert_pipeline = pipeline(
-	# 	'feature-extraction', model='bert-base-uncased'
-	# )
-
-	inputs = "There have always been ghosts in the machine. Random "+\
-		"segments of code that when grouped together form unexpected "+\
-		"protocols."
-	
-	# output = bert_pipeline(inputs, return_tensors=True)
-	# output = bert_embeddings_pipeline(inputs , return_tensors=True)
-	model_inputs = tokenizer.encode(inputs, return_tensors='pt') # tensor [b, len]
-	output = bert_model(model_inputs)
+	print("Output from custom BERT pipeline:")
+	output = bert_embeddings_pipeline(inputs, return_tensors=True)
 	print(output)
 	print(len(output))
-	print(output[0].shape) # Outputs sentence embedding
-	print(output[1].shape) # Outputs pooled embedding
+	print(output[0].shape) # Outputs pooled embedding
+	print("-" * 72)
 
+	# Export the pipeline to ONNX format.
+	bert_model.to('cpu')
+	onnx_convert.convert_pytorch(
+		bert_embeddings_pipeline, 
+		opset=11, # Use newest operators that are supported
+		output=Path("bert.onnx"), # use Path from pathlib, not raw str
+		use_external_format=False
+	)
+
+
+	exit()
 	print(model_inputs)
+
 
 	# dummy_input = torch.randint((1, 512))
 	dummy_input = torch.randn((1, 512))
-
 
 	onnx_path = "./bert_model.onnx"
 	torch.onnx.export(
