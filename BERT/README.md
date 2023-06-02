@@ -20,15 +20,17 @@ Description: Download a BERT model from Tensorflow Hub in Python to create BERT 
 	 - References for the above:
 		 - Microsoft [pytorch convert model](https://learn.microsoft.com/en-us/windows/ai/windows-ml/tutorials/pytorch-convert-model)
 		 - HuggingFace [custom pipeline](https://huggingface.co/docs/transformers/add_new_pipeline#share-your-pipeline-on-the-hub)
-	 - Additional references (may not have been imple)
+	 - Additional references (may not have been implemented)
 		 - Medium [article](https://towardsdatascience.com/nlp-transformers-pipelines-with-onnx-9b890d015723)
 		 - Huggingface serialization [export to onnx][https://huggingface.co/docs/transformers/serialization]
 		 - Huggingface convert transformers to onnx with huggingface optimum [article](https://huggingface.co/blog/convert-transformers-to-onnx)
+		 - Converting models to ONNX [YouTube](https://www.youtube.com/watch?v=lRBsmnBE9ZA)
+ - 
 
 
 ### TODO List
 
- [ ] Fix Dockerfile for exporting BERT with Huggingface. Currently unable to build docker image from Dockerfile on Macbook.
+ [ ] Fix Dockerfile for exporting BERT with Huggingface. Currently unable to build docker image from Dockerfile on Macbook. Also unable to run onnx and onnxruntime from Macbook for model quantization.
 
 ### References
 

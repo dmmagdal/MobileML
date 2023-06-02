@@ -6,8 +6,9 @@
 
 
 from pathlib import Path
+import onnx
+from onnxruntime.quantization import quantize_dynamic, QuantType
 import torch
-from torch import onnx
 from transformers import Pipeline, BertModel, BertTokenizer, pipeline
 from transformers.pipelines import PIPELINE_REGISTRY
 import transformers.convert_graph_to_onnx as onnx_convert
@@ -42,6 +43,10 @@ class BERTPipeline(Pipeline):
 
 
 def main():
+	# Output onnx path.
+	onnx_path = "bert.onnx"
+	quantized_onnx_path = "bert_Int8.onnx"
+
 	# Text inputs to be embedded by BERT.
 	inputs = "There have always been ghosts in the machine. Random "+\
 		"segments of code that when grouped together form unexpected "+\
@@ -118,8 +123,15 @@ def main():
 	onnx_convert.convert_pytorch(
 		bert_embeddings_pipeline, 
 		opset=11, # Use newest operators that are supported
-		output=Path("bert.onnx"), # use Path from pathlib, not raw str
+		output=Path(onnx_path), # use Path from pathlib, not raw str
 		use_external_format=False
+	)
+
+	# Quantize the model. Should see size of model file be reduced.
+	quantize_dynamic(
+		Path(onnx_path), # Input model
+		Path(quantized_onnx_path), # Output model
+		weight_type=QuantType.QUInt8
 	)
 
 	# Exit the program.
