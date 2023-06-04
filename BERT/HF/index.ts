@@ -1,10 +1,12 @@
-// Load the exported TensorflowJS BERT model and pass it some text to
+// Load the exported BERT model (onnx format) and pass it some text to
 // embed.
 
-import { loadTokenizer } from './bert_tokenizer.ts';
-import * as wasmFeatureDetect from 'wasm-feature-detect';
-import ort, { InferenceSession } from 'onnxruntime-web';
-import * as tf from '@tensorflow/tfjs';
+// import { loadTokenizer } from './bert_tokenizer.ts';
+// import * as wasmFeatureDetect from 'wasm-feature-detect';
+// import ort from 'onnxruntime-web';
+import ort from 'onnxruntime-node';
+// import * as tf from '@tensorflow/tfjs';
+import { AutoTokenizer} from '@xenova/transformers';
 import fs from 'fs';
 import path from 'path';
 import process from 'process';
@@ -14,23 +16,80 @@ import process from 'process';
 
 // Inputs.
 const inputs = '\
-  There have always been ghosts in the machine. Random \
-  segments of code that when grouped together form unexpected \
-  protocols.\
+ There have always been ghosts in the machine. Random\
+ segments of code that when grouped together form unexpected\
+ protocols.\
 ';
 
-
-const model = './bert.onnx';
+// const model = new URL('../plain_bert.onnx', import.meta.url).pathname;
+// const model = path.join(__dirname, '..', 'plain_bert.onnx');
+const model = path.join(process.cwd(), '..', 'plain_bert.onnx');
+// const model = path.join(process.cwd(), '..', 'bert.onnx');
+// const model: string = '../bert.onnx';
 // const model = './bert_Int8.onnx';
 
+// console.log(process.cwd())
+// console.log(fs.existsSync(model))
+// process.exit()
+
 // Initialize inference session with ort.
-const session = ort.InferenceSession.create(
+const session = await ort.InferenceSession.create(
   model, 
+  // '../../bert.onnx',
   {
-    executionProviders: ['wasm'], // can also specify 'webgl
+    // executionProviders: ['wasm'], // can also specify 'webgl'
+    // executionProviders: ['webgl'], // can also specify 'wasm'
     graphOptimizationLevel: 'all'
   }
-)
+);
+// const session = await new ort.InferenceSession();
+// await session.loadModel(
+//   model, 
+//   {
+//     executionProviders: ['wasm'], // can also specify 'webgl
+//     graphOptimizationLevel: 'all'
+//   }
+// )
+
+// Inputs.
+const inputs_ = 'There have always been ghosts in the machine. Random\
+ segments of code that when grouped together form unexpected\
+ protocols.\
+';
+
+const tokenizer = await AutoTokenizer.from_pretrained('Xenova/bert-base-uncased');
+const tokenized_inputs = tokenizer(inputs);
+// const tokenized_inputs = tokenizer(inputs, {padding: true, max_length: 512});
+// const tokenized_inputs = tokenizer._call(
+//   inputs, 
+//   {
+//     padding: true, // whether to pad input
+//     max_length: 512 // max input length (where to pad to if applicable)
+//   }
+// );
+console.log(tokenized_inputs)
+
+const input_tensor = new ort.Tensor(
+  'int64', tokenized_inputs.input_ids.data, tokenized_inputs.input_ids.dims
+);
+
+
+const data = new BigInt64Array(512);
+const output = await session.run(
+  {
+    'input_ids': input_tensor
+    // 'input.1': new ort.Tensor('int64', data, [1, 512])//.setValues(data)
+    // 'input_ids': new ort.Tensor('int64', data, [1, 512])//.setValues(data)
+  }
+  // [
+  //   new ort.Tensor('int64', [512])//.setValues(data)
+  // ]
+);
+
+console.log(output);
+
+
+process.exit();
 
 
 async function inference(session: ort.InferenceSession, preprocessedData: any): Promise<void> {
@@ -141,12 +200,7 @@ async function lm_inference(text: string) {
 */
 
 
-// Inputs.
-const inputs = '\
-  There have always been ghosts in the machine. Random \
-  segments of code that when grouped together form unexpected \
-  protocols.\
-';
+
 // const input_tensor = tf.cast(tf.tensor([inputs]), 'string');
 
 // Output from model.

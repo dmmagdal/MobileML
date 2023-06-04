@@ -134,6 +134,28 @@ def main():
 		weight_type=QuantType.QUInt8
 	)
 
+	# Export BERT model to ONNX format.
+	dummy_inputs = {
+		'input_ids': torch.zeros(1, 512, dtype=torch.long),
+	}
+	torch.onnx.export(
+		bert_model,
+		dummy_inputs,
+		'plain_bert.onnx',
+		verbose=True,
+		input_names=['input_ids'],
+		dynamic_axes={
+			'input_ids': {0: "batch_size", 1: "sequence_length"}
+		},
+	)
+
+	# Quantize the model.
+	quantize_dynamic(
+		Path('plain_bert.onnx'), # Input model
+		Path('plain_bert_Int8.onnx'), # Output model
+		weight_type=QuantType.QUInt8
+	)
+
 	# Exit the program.
 	exit(0)
 

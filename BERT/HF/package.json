@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "onnxruntime-web": "^1.15.0",
+    "@xenova/transformers": "^2.1.1",
+    "onnxruntime-node": "^1.15.0",
     "typescript": "^5.0.4"
   },
   "name": "bert-hfonnx-test",
