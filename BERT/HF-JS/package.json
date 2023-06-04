@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@xenova/transformers": "^2.1.0",
+    "@tensorflow/tfjs": "^4.6.0",
     "typescript": "^5.0.4"
   },
   "name": "bert-hfjs-test",

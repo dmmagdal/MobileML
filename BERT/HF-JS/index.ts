@@ -1,15 +1,24 @@
 // Load the BERT model from huggingface transformers js and pass it 
 // some text to embed.
 
-import { AutoModel, AutoTokenizer, pipeline } from '@xenova/transformers';
+import { AutoModel, AutoTokenizer, pipeline, BertModel } from '@xenova/transformers';
+import * as tf from '@tensorflow/tfjs';
 
 
 // Inputs.
-const input_text = '\
- There have always been ghosts in the machine. Random\
- segments of code that when grouped together form unexpected\
- protocols.\
-';
+// const input_text = '\
+//  There have always been ghosts in the machine. Random\
+//  segments of code that when grouped together form unexpected\
+//  protocols.\
+// ';
+const input_text = 'There have always been ghosts in the machine.\
+ Random segments of code that when grouped together form unexpected\
+ protocols.';
+
+// --------------------------------------------------------------------
+// Initialize BERT tokenizer and model from AutoTokenizer and
+// AutoModel.
+// --------------------------------------------------------------------
 
 // Initialize model and tokenizer.
 let tokenizer = await AutoTokenizer.from_pretrained('Xenova/bert-base-uncased');
@@ -32,6 +41,20 @@ console.log(logits);
 // the same as above.
 let call_outputs = await model._call(inputs);
 console.log(call_outputs.logits);
+console.log('-'.repeat(72));
+
+// --------------------------------------------------------------------
+// Initialize BERT model from BERTModel
+// --------------------------------------------------------------------
+
+const bert_model = await BertModel.from_pretrained('Xenova/bert-base-uncased'); // Same as AutoModel
+const bert_model_outputs = await bert_model(inputs);
+console.log(bert_model_outputs);
+console.log('-'.repeat(72));
+
+// --------------------------------------------------------------------
+// Initialize BERT model through feature extraction pipeline
+// --------------------------------------------------------------------
 
 // Initialize a (feature extraction) pipeline. Pass the input through
 // the pipeline for processing.
@@ -48,6 +71,13 @@ let output = await pipe(
 );
 console.log(output);
 
+// console.log(call_outputs.logits.data);
+// console.log(tf.tensor(call_outputs.logits.data));
+// let tf_logits = tf.tensor(call_outputs.logits.data);
+// let tf_logits_softmax = tf.softmax(tf_logits)
+// console.log(tf_logits_softmax);
+// console.log(tf_logits_softmax.print())
+
 // Print out to console.
-console.log('Input:', input_text);
-console.log('BERT Embedding:', output);
+// console.log('Input:', input_text);
+// console.log('BERT Embedding:', output);
