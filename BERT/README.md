@@ -44,8 +44,10 @@ Description: Download a BERT model from Tensorflow Hub in Python to create BERT 
 	 - Building anything Tensorflow or PyTorch related on Docker will lead to a core dump at runtime (if the image is even able to be built in the first place).
  - I ended up doing the following to get BERT to run in javascript:
 	 - Use Transformers-JS for the pretrained tokenizer rather than implement it on my own.
-	 - Export the BERT model from Huggingface to ONNX with `torch.onnx.export()`, be sure to specify `dynamic_axes` for the inputsl.
-	 - Use ONNX Runtime Node to create an inference session and pass tokenized data to the model. The output for BERT will be both the sentence output and pooled output as expected.
+	 - Export the BERT model from Huggingface to ONNX with `torch.onnx.export()`, be sure to specify `dynamic_axes` for the inputs. Exporting the BERT model from Huggingface to ONNX as part of a custom pipeline also works too (uses `transformers.convert_graph_to_onnx()`).
+	 - Use ONNX Runtime Node to create an inference session and pass tokenized data to the model (both vanilla BERT model and BERT pipeline model). The output for BERT will be both the sentence output and pooled output as expected.
+		 - The names of the outputs (sentence output and pooled output) are different between the pipeline BERT and raw BERT model. You will need to distinguish between the two via trail & error or just printing & reading the outputs.
+		 - Still have not verified results between quantized BERT models in JS & original BERT in python (HF & TF). Would recommend that until then, use the same BERT model (unquantized unless absolutely necessary) to maintain consistency.
 
 
 ### TODO List
