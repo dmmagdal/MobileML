@@ -67,16 +67,19 @@ let pipe = await pipeline(
 let output = await pipe(
   input_text, 
   // {pooling: 'mean', normalize: true} // pool & normalize logits from BERT.
-  {pooling: 'mean', normalize: false} // pool & normalize logits from BERT.
-);
+  // {pooling: 'mean', normalize: false} // pool & dont normalize logits from BERT.
+); // Note: Apparently only 'mean' pooling is supported if specified.
 console.log(output);
 
 // console.log(call_outputs.logits.data);
 // console.log(tf.tensor(call_outputs.logits.data));
-// let tf_logits = tf.tensor(call_outputs.logits.data);
-// let tf_logits_softmax = tf.softmax(tf_logits)
+// let tf_logits = tf.tensor(
+//   call_outputs.logits.data, // data
+//   call_outputs.logits.dims // dims/shape
+// );
+// let tf_logits_softmax = tf.softmax(tf_logits) // despite documentation saying there is a dim argument, non-last dimension softmax is currently not supported
 // console.log(tf_logits_softmax);
-// console.log(tf_logits_softmax.print())
+// console.log(tf_logits_softmax.print()); // currently, not the correct value (for sentence output)
 
 // Print out to console.
 // console.log('Input:', input_text);
