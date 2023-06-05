@@ -52,7 +52,7 @@ Description: Download a BERT model from Tensorflow Hub in Python to create BERT 
 
 ### TODO List
 
- [ ] Fix Dockerfile for exporting BERT with Huggingface. Currently unable to build docker image from Dockerfile on Macbook.
+ [x] Fix Dockerfile for exporting BERT with Huggingface. Currently unable to build docker image from Dockerfile on Macbook. Update: I was able come to a finalized version of the Docker file using old Windows laptop. Base image with Python 3.9 base resulted in the image being 8.5GB large.
 
 
 ### References

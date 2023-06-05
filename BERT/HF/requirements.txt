@@ -1,4 +1,0 @@
-datasets
-onnx
-onnxruntime
-tokenizers

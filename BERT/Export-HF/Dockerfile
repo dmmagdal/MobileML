@@ -1,8 +1,13 @@
 # Docker file to run a container that will run the hf_onnx_bert.py 
 # in Python 3 for Huggingface (no GPU).
 
-# Load tensorflow image for huggingface and Python 3.
-FROM huggingface/transformers-cpu
+# Load tensorflow image for huggingface and Python 3. The
+# transformers-cpu & transformers-gpu max out at tranformers v4.18.0.
+# There are also huggingface/transformers-inference & 
+# huggingface/transformers-training which max out a transformers
+# v4.24.0.
+FROM python:3.9.12
+# FROM huggingface/transformers-cpu
 # FROM huggingface/transformers-gpu
 
 # Set locale for variable (pulled from dockerfile in original OpenAI

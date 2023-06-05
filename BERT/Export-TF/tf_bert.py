@@ -1,4 +1,4 @@
-# bert.py
+# tf_bert.py
 # Initialize a BERT model from tensorflow hub and convert it to a
 # format for tensorflow JS.
 # Windows/MacOS/Linux
