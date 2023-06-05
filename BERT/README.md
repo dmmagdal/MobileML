@@ -1,6 +1,6 @@
 # BERT Embeddings
 
-Description: Download a BERT model from Tensorflow Hub in Python to create BERT embeddings and export it to Tensorflow JS. Then pass a string to the Tensorflow JS model in NodeJS program.
+Description: Download a BERT model from either Tensorflow Hub or Huggingface models hub in Python to create BERT embeddings and export it to a JS compatible format (such as ONNX or Tensorflow JS). Then pass a string to the JS model in NodeJS program.
 
 
 ### Notes
