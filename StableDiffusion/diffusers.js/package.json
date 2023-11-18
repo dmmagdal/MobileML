@@ -1,0 +1,19 @@
+{
+  "name": "diffusers.js",
+  "version": "0.0.1",
+  "description": "A javascript/typescript implementation of the diffusers package from Huggingface to allow for the use of diffusion models on web, mobile, and desktop (similar to transformers.js)",
+  "main": "src/diffusers.js",
+  "directories": {
+    "example": "examples",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@xenova/transformers": "^2.8.0",
+    "onnxruntime-web": "^1.16.2"
+  }
+}
