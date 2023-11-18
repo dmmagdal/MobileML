@@ -4,6 +4,7 @@ Description: A collection of public works and examples that bring machine learni
 
 
 ### Notes:
+
  - TensorflowJS
      - TFJS runs on WebGL in browser ([reference](https://www.tensorflow.org/js/guide/layers_for_keras_users#memory_management_of_layer_and_model_objects))
          - The weights of Model and Layer objects are backed by WebGL textures.
@@ -15,6 +16,7 @@ Description: A collection of public works and examples that bring machine learni
 
 
 ### References:
+
  - TensorflowJS
      - [NPM page](https://www.npmjs.com/package/@tensorflow/tfjs)
      - GitHub
@@ -28,7 +30,7 @@ Description: A collection of public works and examples that bring machine learni
  - Ndarray
      - [NPM page](https://www.npmjs.com/package/ndarray)
  - Huggingface
-     - [Huggignface JS libraries](https://huggingface.co/docs/huggingface.js/index)
+     - [Huggignface JS library](https://huggingface.co/docs/huggingface.js/index)
      - [Huggingface hub API (JS)](https://huggingface.co/docs/huggingface.js/hub/README)
      - [Huggingface inference API (JS)](https://huggingface.co/docs/huggingface.js/inference/README)
  - Brain.js

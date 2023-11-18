@@ -11,8 +11,8 @@ Description: Export stable diffusion models from huggingface (or checkpoints fro
  - Create the new virtual environment:
 	 - `python -m venv sd2onnx-env`
  - Activate the virtual environment:
-	 - Linux/MacOS: source autogptq-env/bin/activate
-	 - Windows: .\sd2onnx-env\Scripts\activate
+	 - Linux/MacOS: `source autogptq-env/bin/activate`
+	 - Windows: `.\sd2onnx-env\Scripts\activate`
  - Deactivate the virtual environment:
 	 - `deactivate`
  - Install the necessary packages (while the virtual environment is active):
@@ -59,7 +59,11 @@ Description: Export stable diffusion models from huggingface (or checkpoints fro
  - [Huggingface Hub Model from aislamov](https://huggingface.co/aislamov/stable-diffusion-2-1-base-onnx)
  - [Huggingface Documentation to Export/Run Inference Models/Stable Diffusion to ONNX](https://huggingface.co/docs/diffusers/optimization/onnx)
  - Manual conversion
-	 - [YouTube video](https://www.youtube.com/watch?v=caCzBJcQ5jo&t=749s&ab_channel=Tech-Practice) on converting Civitai stable diffusion models model checkpoints (ckpt) to ONNX
+	 - [YouTube video](https://www.youtube.com/watch?v=caCzBJcQ5jo&t=749s&ab_channel=Tech-Practice) on converting Civitai stable diffusion models model checkpoints (ckpt) to ONNX.
 	 - [Diffusers script](https://github.com/huggingface/diffusers/blob/main/scripts/convert_original_stable_diffusion_to_diffusers.py) to convert a stable diffusion model (ckpt) to diffusers compatible format.
 	 - [Diffusers script](https://github.com/huggingface/diffusers/blob/main/scripts/convert_stable_diffusion_checkpoint_to_onnx.py) to convert a stable diffusion model (diffusers) to onnx.
 	 - Stable diffusion 1.0 [inference yaml file](https://raw.githubusercontent.com/CompVis/stable-diffusion/main/configs/stable-diffusion/v1-inference.yaml) from CompVis repo (required for `convert_original_stable_diffusion_to_diffusers.py` from `diffusers/scripts/`).
+ - Stable Diffusion 1.X variant model used in conversion
+	 - Original model from [Huggingface hub](https://huggingface.co/Envvi/Inkpunk-Diffusion) (`Envvi/Inkpunk-Diffusion`)
+	 - [Converted model](https://huggingface.co/dmmagdal/Inkpunk-Diffusion-ONNX) from using `optimum` cli and Huggingface hub model id (`dmmagdal/Inkpunk-Diffusion-ONNX`)
+	 - [Converted model]() from using `diffusers/scripts/` (dmmagdal/Inkpunk-Diffusion-ONNX-alt)
