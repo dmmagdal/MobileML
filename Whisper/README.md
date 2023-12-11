@@ -26,9 +26,6 @@ Description: Export whisper models from huggingface to ONNX, then run the model 
 
  - Convert stable diffusion model from huggingface hub to onnx via command line:
 	 - `optimum-cli export onnx --model model_id/on_hub dest_folder`
- - Convert stable diffusion model from checkpoint file (`.ckpt` or `.safetensor`) to onnx via `diffusers` scripts:
-	 - Clone the `diffusers` git repo:
-		 - `git clone https://github.com/huggingface/diffusers.git`
  - Original Whisper model checkpoints (from Huggingface hub):
      - [openai/whisper-tiny](https://huggingface.co/openai/whisper-tiny)
      - [openai/whisper-small](https://huggingface.co/openai/whisper-small)
@@ -45,6 +42,7 @@ Description: Export whisper models from huggingface to ONNX, then run the model 
 
 ### References
 
- - [Stable Diffusion NodeJS Repository from GitHub](https://github.com/dakenf/stable-diffusion-nodejs)
- - [Huggingface Hub Model from aislamov](https://huggingface.co/aislamov/stable-diffusion-2-1-base-onnx)
- - [Huggingface Documentation to Export/Run Inference Models/Stable Diffusion to ONNX](https://huggingface.co/docs/diffusers/optimization/onnx)
+ - [Huggingface Documentation](https://huggingface.co/docs/optimum/exporters/onnx/usage_guides/export_a_model): Export a model to ONNX with optimum.exporters.onnx
+ - [Transformers JS](https://huggingface.co/docs/transformers.js/tutorials/node): Server-side inference in NodeJS
+ - [Transformers JS](https://huggingface.co/docs/transformers.js/pipelines): The pipeline API
+ - [Transformers JS](https://huggingface.co/docs/transformers.js/api/pipelines#pipelinesautomaticspeechrecognitionpipeline): ASR pipeline
