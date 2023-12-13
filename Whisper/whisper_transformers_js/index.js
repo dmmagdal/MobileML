@@ -1,11 +1,16 @@
 // Import modules.
 // import {  } from '@xenova/transformers';
-import { pipeline } from '@xenova/transformers';
+import { pipeline, env } from '@xenova/transformers';
 
 
 async function  main () {
+    env.allowRemoteModels = false;
+    env.allowLocalModels = true;
+    env.localModelPath = './';
+
     // Initialize tokenizer & model.
-    const model_id = 'dmmagdal/whisper-tiny-onnx';
+    const model_id = 'whisper_base';
+    // const model_id = 'dmmagdal/whisper-tiny-onnx';
     // const model_id = 'dmmagdal/whisper-small-onnx';
     // const model_id = 'dmmagdal/whisper-base-onnx';
     // const model_id = 'dmmagdal/whisper-medium-onnx';
@@ -17,6 +22,7 @@ async function  main () {
         {
             quantized: false,        // passing in quantized: false means that transformers.js wont look for the quantized onnx model files
             cache_dir: cache_dir,    // passing in cache_dir value to specify where to save files locally.
+            local_files_only: true,
         }
     );   // pipeline abstraction for all-in-one
 
